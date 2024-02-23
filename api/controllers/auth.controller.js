@@ -37,8 +37,8 @@ export const signin = async (req,res,next)=>{
         if(!validUser){
             return next(errorhandler(404,'User not found'));
         }
-        const validpassword = bcryptjs.compareSync(password,validUser.password);
-        // const validpassword = (password===validUser.password);
+        // const validpassword = bcryptjs.compareSync(password,validUser.password);
+        const validpassword = (password===validUser.password);
         console.log(password+" "+validUser.password+" "+validpassword);
         if(!validpassword){
             return next(errorhandler(400,'Invalid password'))
@@ -55,6 +55,44 @@ export const signin = async (req,res,next)=>{
     }
     catch(err){
         next(err);
+    }
+}
+
+export const google = async (req,res,next)=>{
+    const {email,name,googlePhotoUrl} = req.body;
+    //console.log(req.body);
+    try{
+        const user = await User.findOne({email});
+        if(user){
+            console.log(user);
+            const token = jwt.sign({id:user._id},process.env.JWT_SECERT);
+            const {password,...rest} = user._doc;
+            res.status(200).cookie('access_token',token,{
+                httpOnly:true,
+            }).json(rest);
+        }
+        else{
+            const generatedPassword = Math.random().toString(36).slice(-8)+Math.random().toString(36).slice(-8);
+
+            const newUser = new User({
+                username : name.toLowerCase().split(' ').join('')+Math.random().toString(9).slice(-4),
+                email,
+                password : generatedPassword,
+                profilePicture : googlePhotoUrl,
+            })
+            console.log(newUser);
+            await newUser.save();
+            const token = jwt.sign({id:newUser._id},process.env.JWT_SECERT);
+            // const token = jwt.sign({id:validUser._id},process.env.JWT_SECERT);
+            const {password,...rest} = newUser._doc;
+            res.status(200).cookie('access_token',token,{
+                httpOnly:true,
+            }).json(rest);
+
+        }
+    }
+    catch(err){
+        console.log(err);
     }
 }
 
