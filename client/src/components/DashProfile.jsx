@@ -13,7 +13,7 @@ export default function DashProfile() {
     const [imageFileUrl ,setImageFileUrl] = useState(null);
     const [imageFileUploadProgress,setimageFileUploadProgress] = useState(0);
     const [imageFileUploadError,setimageFileUploadError] = useState(null);
-    console.log(imageFileUploadProgress,imageFileUploadError);
+    const [formData,setFormData] = useState({});
     const filePickerRef = useRef();
 
     const handleImageChange = (e) =>{
@@ -61,10 +61,16 @@ export default function DashProfile() {
             ()=>{
                 getDownloadURL(uploadTask.snapshot.ref).then((downloadURL)=>{
                         setImageFileUrl(downloadURL);
+                        setFormData({...formData,profilePicture:downloadURL})
                 })
             }
         )
     }
+
+    const handleChange = (e)=>{
+        setFormData({...formData,[e.target.id]:e.target.value});
+    }
+    console.log(formData);
   return (
     <div className="max-w-lg mx-auto p-3 w-full">
         <h1 className="my-7 text-center font-semibold text-3xl">Profile</h1>
@@ -97,9 +103,9 @@ export default function DashProfile() {
             {imageFileUploadError && <Alert color='failure'>
                 {imageFileUploadError}
             </Alert>}
-            <TextInput type = 'text' id = 'username ' placeholder="username" defaultValue={currentUser.username}></TextInput>
-            <TextInput type = 'email' id = 'email ' placeholder="email" defaultValue={currentUser.email}></TextInput>
-            <TextInput type = 'password' id = 'password ' placeholder="password" ></TextInput>
+            <TextInput type = 'text' id = 'username ' placeholder="username" defaultValue={currentUser.username} onChange= {handleChange}></TextInput>
+            <TextInput type = 'email' id = 'email ' placeholder="email" defaultValue={currentUser.email} onChange= {handleChange}></TextInput>
+            <TextInput type = 'password' id = 'password ' placeholder="password" onChange= {handleChange}></TextInput>
             <Button type = 'submit' gradientDuoTone='purpleToBlue' outline >
                 Update
             </Button>
