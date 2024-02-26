@@ -5,6 +5,7 @@ import userRoutes from './routes/user.route.js'
 import authRotes from './routes/auth.route.js'
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
+import bodyParser from 'body-parser';
 
 
 dotenv.config();
@@ -22,6 +23,10 @@ app.use(cors());
 
 
 app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: false }))
+
+// parse application/json
+app.use(bodyParser.json())
 app.listen(3000,()=>{
     console.log('server is running on port 3000!!!!')
 })
@@ -38,4 +43,5 @@ app.use((err,req,res,next)=>{
         statuscode,
         message,
     })
+    // console.log(res);
 })
