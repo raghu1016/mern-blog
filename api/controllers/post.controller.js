@@ -36,7 +36,7 @@ export const getposts = async (req,res,next)=>{
             ...(req.query.userId && {userId : req.query.userId}),
             ...(req.query.category && {category : req.query.category}),
             ...(req.query.slug && {slug : req.query.slug}),
-            ...(req.query.postId&& {userId : req.query.postId}),
+            ...(req.query.postId && {_id: req.query.postId}),
             ...(req.query.searchTerm && {
                 $or:[
                     {title :{$regex : req.query.searchTerm,$options:'i'}},
@@ -46,7 +46,6 @@ export const getposts = async (req,res,next)=>{
         }).sort({updatedAt:sortDirection}).skip(startIndex).limit(limit);
 
         const totalPosts = await Post.countDocuments();
-
         const now = new Date();
 
         const oneMonthAgo = new Date(
@@ -80,4 +79,26 @@ export const deletepost = async (req,res,next)=>{
     }
 }
 
-
+export const updatepost = async(req,res,next)=>{
+    console.log(req.body);
+    if(!req.user.isAdmin || req.user.id!== req.params.userId){
+        return next(errorhandler(403,'You are allowed to update this post'));
+    }
+    try{
+        const updatePost = await Post.findByIdAndUpdate(
+            req.params.postId,
+            {
+                $set:{
+                    title : req.body.title,
+                    content : req.body.content,
+                    category : req.body.category,
+                    image : req.body.image,
+                }
+            },{new:true}
+        )
+        res.status(200).json(updatePost);
+    }
+    catch(err){
+        next(err);
+    }
+}
