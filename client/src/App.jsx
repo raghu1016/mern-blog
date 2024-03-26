@@ -5,7 +5,7 @@ import About from "./pages/About.jsx"
 import Dashboard from "./pages/Dashboard.jsx"
 import SignIn from "./pages/SignIn.jsx"
 import SignUp from "./pages/SignUp.jsx"
-import Projects from "./pages/Pojects.jsx"
+import Projects from "./pages/Projects.jsx"
 import Header from "./components/Header.jsx"
 import Footer from './components/Footer.jsx'
 import PrivateRoute from './components/PrivateRoute.jsx'
@@ -14,6 +14,7 @@ import CreatePost from './pages/CreatePost.jsx'
 import UpdatePost from './pages/UpdatePost.jsx'
 import PostPage from './pages/PostPage.jsx';
 import ScrollToTop from './components/ScrollToTop.jsx'
+import Search from './pages/Search.jsx'
 
 export default function App() {
   return (
@@ -25,6 +26,7 @@ export default function App() {
         <Route path="/about" element={<About/>}/>
         <Route path="/sign-in" element={<SignIn/>}/>
         <Route path="/sign-up" element={<SignUp/>}/>
+        <Route path="/search" element={<Search/>}/>
         <Route element={<PrivateRoute/>}>
           <Route path="/dashboard" element={<Dashboard/>}/>
         </Route>  
