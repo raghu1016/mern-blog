@@ -10,6 +10,8 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 
+import path from 'path';
+
 
 dotenv.config();
 
@@ -19,6 +21,7 @@ mongoose.connect(process.env.ConnectionURL).then(()=>{
     console.log(err);
 })
 
+const __dirname = path.resolve();
 
 const app = express();
 app.use(cookieParser());
@@ -38,6 +41,12 @@ app.use('/api/user',userRoutes)
 app.use('/api/auth',authRoutes);
 app.use('/api/post',postRoutes);
 app.use('/api/comment',commentRoutes);
+
+app.use(express.static(path.join(__dirname,'/client/dist')))
+
+app.get('*',(req,res)=>{
+    res.sendFile(path.join(__dirname,'client','dist','index.html'));
+})
 
 app.use((err,req,res,next)=>{
     const statuscode = err.statuscode || 500;
