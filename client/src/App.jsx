@@ -5,7 +5,7 @@ import About from "./pages/About.jsx"
 import Dashboard from "./pages/Dashboard.jsx"
 import SignIn from "./pages/SignIn.jsx"
 import SignUp from "./pages/SignUp.jsx"
-import Projects from "./pages/Projects.jsx"
+import Projects from "./pages/ProjectsFile.jsx"
 import Header from "./components/Header.jsx"
 import Footer from './components/Footer.jsx'
 import PrivateRoute from './components/PrivateRoute.jsx'
