@@ -16,7 +16,7 @@ export default function DashProfile() {
     const {currentUser,loading,error} = useSelector((state)=>state.user);
     const [imageFile,setImageFile] = useState(null);
     const [imageFileUrl ,setImageFileUrl] = useState(null);
-    const [imageFileUploadProgress,setimageFileUploadProgress] = useState(0);
+    const [imageFileUploadProgress,setimageFileUploadProgress] = useState(null);
     const [imageFileUploadError,setimageFileUploadError] = useState(null);
     const [imageFileUploading,setImageFileUploading] = useState(false);
     const [userProfileUpdated,setUserProfileUpdated] = useState(null);
@@ -172,7 +172,7 @@ export default function DashProfile() {
         <h1 className="my-7 text-center font-semibold text-3xl">Profile</h1>
         <form onSubmit = {handleSubmit} className="flex flex-col gap-4">
             <input type = "file" accept="image/*" onChange = {handleImageChange} ref={filePickerRef} hidden/>
-            <div className="relative w-32 h-32 self-center  cursor-pointer shadow-md overflow =hidden rounded-full" onClick = {()=>filePickerRef.current.click()}>
+            <div className="relative w-32 h-32 self-center cursor-pointer shadow-md overflow =hidden rounded-full" onClick = {()=>filePickerRef.current.click()}>
             {imageFileUploadProgress && (
                 <CircularProgressbar value={imageFileUploadProgress||0 } text={`${imageFileUploadProgress}%`}
                 strokeWidth={5}
